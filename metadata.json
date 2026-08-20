@@ -1,6 +1,0 @@
-{
-  "name": "Digital Banking System",
-  "description": "An interactive digital banking portal driven by a real C-programming backend showcasing structures, linked lists, dynamic memory allocation, and file handling.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
