@@ -43,6 +43,70 @@ Unlike standard CRUD web apps, core banking logic—such as account creation, le
 - **Interactive Chat**: Ask complex financial questions directly within the banking portal.
 
 ---
+
+## 🏗️ Architecture & Core Structures
+
+The application communicates via an **Express.js API Bridge** (`server.ts`) that spawns child processes to execute C binaries or dynamically falls back to a mirrored TypeScript state engine when GCC is unavailable.
+
+### C Data Structure Definitions (`backend.c`)
+```c
+typedef struct {
+    int id;
+    char type;          // 'D' = Deposit, 'W' = Withdraw, 'T' = Transfer Out, 'R' = Transfer In
+    double amount;
+    char timestamp[30];
+    char description[100];
+} Transaction;
+
+typedef struct {
+    int accountNumber;
+    char name[100];
+    double balance;
+    Transaction* transactions; // Dynamically allocated array (malloc / realloc)
+    int transactionCount;
+    int transactionCapacity;
+} Account;
+
+typedef struct BankNode {
+    Account account;
+    struct BankNode* next;     // Linked list pointer to next account node
+} BankNode;
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- **Node.js** (v18.0.0 or higher)
+- **npm** or **yarn**
+- **GCC Compiler** *(Optional, for native C execution. The app includes an automatic TypeScript simulated state engine if GCC is not detected in the host environment).*
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/digital-banking-system.git
+   cd digital-banking-system
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment Variables:**
+   Create a `.env` file in the root directory and add your Google Gemini API key:
+   ```env
+   GEMINI_API_KEY=your_google_gemini_api_key_here
+   ```
+
+4. **Start the Development Server:**
+   ```bash
+   npm run dev
+   ```
+   The application will boot up at `http://localhost:3000`.
+
 ---
 
 ## 📂 Project Structure
@@ -70,3 +134,18 @@ Unlike standard CRUD web apps, core banking logic—such as account creation, le
 - **AI Integration**: Google GenAI SDK (`@google/genai`)
 
 ---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
